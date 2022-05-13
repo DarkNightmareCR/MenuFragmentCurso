@@ -59,9 +59,9 @@ class CamaraFragment : Fragment() {
         empleadoList.setAdapter(empleadoAdapter)
 
         //al hacer click en el fab plus
-        vista.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+
             vista.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener{ Agregar() }
-        }
+
 
         return vista
     }

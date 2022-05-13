@@ -1,9 +1,12 @@
 package cr.ac.menufragmentcurso.repository
 
 import cr.ac.menufragmentcurso.entity.Empleado
+import cr.ac.menufragmentcurso.service.EmpleadoService
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class EmpleadoRepository {
-    val empleados : HashMap<String, Empleado> = HashMap()
+   val empleadoService : EmpleadoService
 
     companion object{
         @JvmStatic
@@ -13,33 +16,23 @@ class EmpleadoRepository {
     }
 
     constructor(){
-        save(Empleado("1","Eduardo Fonseca 1", "Programador","TI", 0))
-        save(Empleado("2","Eduardo Fonseca 2", "Programador","TI", 0))
-        save(Empleado("3","Eduardo Fonseca 3", "Programador","TI", 0))
-        save(Empleado("4","Eduardo Fonseca 4", "Programador","TI", 0))
-        save(Empleado("5","Eduardo Fonseca 5", "Programador","TI", 0))
-        save(Empleado("6","Eduardo Fonseca 6", "Programador","TI", 0))
-        save(Empleado("7","Eduardo Fonseca 7", "Programador","TI", 0))
-        save(Empleado("8","Eduardo Fonseca 8", "Programador","TI", 0))
-        save(Empleado("9","Eduardo Fonseca 9", "Programador","TI", 0))
-        save(Empleado("10","Eduardo Fonseca 10", "Programador","TI", 0))
-        save(Empleado("11","Eduardo Fonseca 11", "Programador","TI", 0))
-        save(Empleado("12","Eduardo Fonseca 12", "Programador","TI", 0))
-        save(Empleado("13","Eduardo Fonseca 13", "Programador","TI", 0))
-        save(Empleado("14","Eduardo Fonseca 14", "Programador","TI", 0))
-        save(Empleado("15","Eduardo Fonseca 15", "Programador","TI", 0))
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://etiquicia.click/restAPI/api.php/records/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        empleadoService = retrofit.create(EmpleadoService::class.java)
     }
     fun save(empleado: Empleado){
-        empleados.put(empleado.id, empleado)
+        empleadoService.save(empleado).execute()
     }
     fun edit(empleado: Empleado){
-        empleados.put(empleado.id, empleado)
+        empleado.idEmpleado?.let { empleadoService.update(it, empleado).execute() }
     }
-    fun delete (id: String ){
-        empleados.remove(id)
+    fun delete (empleado: Empleado){
+        empleado.idEmpleado?.let { empleadoService.delete(it).execute() }
     }
 
     fun datos():List<Empleado>{
-        return empleados.values.toList()
+        return empleadoService.getEmpleado().execute().body()!!.records
     }
 }

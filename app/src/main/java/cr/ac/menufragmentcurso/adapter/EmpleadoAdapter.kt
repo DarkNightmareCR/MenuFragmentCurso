@@ -1,6 +1,9 @@
 package cr.ac.menufragmentcurso.adapter
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,10 +28,18 @@ class EmpleadoAdapter(context: Context, empleados: List<Empleado>)
 
         nombre.setText(empleado?.nombre)
         puesto.setText(empleado?.puesto)
+        if(empleado?.avatar != ""){
+            imagen.setImageBitmap(empleado?.avatar?.let { decodeImage(it) })
+        }else{
         imagen.setImageResource(R.drawable.ic_launcher_foreground)
+        }
 
 
 
         return rowView
+    }
+    private fun decodeImage (b64 : String): Bitmap {
+        val imageBytes = Base64.decode(b64, 0)
+        return  BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 }
