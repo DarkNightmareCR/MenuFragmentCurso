@@ -96,7 +96,7 @@ class AddEmpleadoFragment : Fragment() {
         val baos = ByteArrayOutputStream()
         bm.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val b = baos.toByteArray()
-        return Base64.encodeToString(b, Base64.DEFAULT)
+        return Base64.encodeToString(b, Base64.DEFAULT).replace("\n","")
     }
     fun Salir(){
         val fragmento: Fragment = CamaraFragment.newInstance("Camara")
